@@ -6,19 +6,22 @@ import { AuthRequest } from '../types';
 export const register = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
+    //check if user email and username already exist
+    const userExists = await User.findOne({ $or: [{ email }, { username }] });
+    if (userExists) {
+      return res.status(400).json({ success: false, message: 'User already exists' });
+    }
 
     const user = await User.create({ username, email, password });
-
-    const token = generateToken(user._id.toString());
-
     res.status(201).json({
       success: true,
-      token,
       user: {
         id: user._id,
         username: user.username,
         email: user.email
-      }
+      },
+      message: 'User created successfully'
+
     });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -48,7 +51,8 @@ export const login = async (req: Request, res: Response) => {
         id: user._id,
         username: user.username,
         email: user.email
-      }
+      },
+      message: 'Login successful'
     });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -57,6 +61,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const getMe = async (req: AuthRequest, res: Response) => {
   try {
+    console.log("i am inside getMe");
     const user = await User.findById(req.user?.id);
     res.status(200).json({ success: true, user });
   } catch (error: any) {

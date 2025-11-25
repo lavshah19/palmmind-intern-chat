@@ -7,6 +7,7 @@ export const errorHandler = (err: any, req: Request, res: Response, next: NextFu
     const errors = Object.values(err.errors).map((e: any) => e.message);
     return res.status(400).json({ success: false, message: errors });
   }
+  console.log("hahahahabkababkbaakk")
 
   if (err.code === 11000) {
     const field = Object.keys(err.keyValue)[0];

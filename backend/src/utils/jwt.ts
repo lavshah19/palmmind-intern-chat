@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 
-const JWT_SECRET = process.env.JWT_SECRET || "fallbackSecret";
+const JWT_SECRET = process.env.JWT_SECRET || "lavshah";
 const ACCESS_TOKEN_EXPIRY = '7d';
 
 export function generateToken(id: string): string {
@@ -15,5 +15,10 @@ export function generateToken(id: string): string {
 // };
 
 export const verifyToken = (token: string): any => {
-  return jwt.verify(token, process.env.JWT_SECRET as string);
+  console.log("inside verifyToken",token);
+const decoded = (jwt.verify(token, JWT_SECRET )as {
+    id: string;
+  });
+  console.log(decoded,"decoded");
+  return decoded;
 };

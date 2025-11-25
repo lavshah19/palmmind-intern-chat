@@ -2,8 +2,6 @@ import { Response } from 'express';
 import User from '../models/User';
 import { AuthRequest } from '../types';
 
-
-// this is for admin only if admin feature add in future
 export const getAllUsers = async (req: AuthRequest, res: Response) => {
   try {
     const users = await User.find().select('-password');
@@ -12,6 +10,7 @@ export const getAllUsers = async (req: AuthRequest, res: Response) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
 
 export const getUser = async (req: AuthRequest, res: Response) => {
   try {

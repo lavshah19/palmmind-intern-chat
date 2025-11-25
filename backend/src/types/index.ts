@@ -19,8 +19,8 @@ export interface IMessage extends Document {
 export interface AuthRequest extends Request {
   user?: {
     id: string;
-    username: string;
-    email: string;
+    username?: string;
+    email?: string;
   };
 }
 

@@ -3,9 +3,8 @@ import Message from '../models/Message';
 import { verifyToken } from '../utils/jwt';
 import User from '../models/User';
 import { SocketUser } from '../types';
-
+const ROOM = "palmmind:Room"; 
 const connectedUsers: Map<string, SocketUser> = new Map();
-
 export const initializeSocket = (io: Server) => {
   io.use(async (socket: Socket, next) => {
     try {
@@ -37,6 +36,9 @@ export const initializeSocket = (io: Server) => {
     const user = socket.data.user;
     console.log(`User connected: ${user.username}`);
 
+    // Join the hardcoded room
+    socket.join(ROOM);
+
     // Add user to connected users
     connectedUsers.set(socket.id, {
       userId: user.id,
@@ -44,25 +46,25 @@ export const initializeSocket = (io: Server) => {
       socketId: socket.id
     });
 
-    // Get stats
+    // Statistics
     const totalMessages = await Message.countDocuments();
     const totalUsers = await User.countDocuments();
     const activeUsers = connectedUsers.size;
 
-    // Send stats to all users
-    io.emit('stats', {
+    // Send stats only to that room
+    io.to(ROOM).emit('stats', {
       totalMessages,
       totalUsers,
       activeUsers
     });
 
-    // Notify user joined
-    socket.broadcast.emit('userJoined', {
+    // Notify that user joined (to room only)
+    socket.to(ROOM).emit('userJoined', {
       username: user.username,
       timestamp: new Date()
     });
 
-    // Load recent messages
+    // Load recent 50 messages
     const recentMessages = await Message.find()
       .sort({ createdAt: -1 })
       .limit(50)
@@ -70,8 +72,8 @@ export const initializeSocket = (io: Server) => {
 
     socket.emit('loadMessages', recentMessages.reverse());
 
-    // Handle new message
-    socket.on('sendMessage', async (data: { message: string }) => {
+    // Handle new message (inside room only)
+    socket.on('sendMessage', async (data: { message: string}) => {
       try {
         const newMessage = await Message.create({
           user: user.id,
@@ -79,8 +81,8 @@ export const initializeSocket = (io: Server) => {
           message: data.message
         });
 
-        // Emit to all users
-        io.emit('message', {
+        // Emit inside room only
+        io.to(ROOM).emit('message', {
           _id: newMessage._id,
           user: newMessage.user,
           username: newMessage.username,
@@ -90,7 +92,7 @@ export const initializeSocket = (io: Server) => {
 
         // Update stats
         const totalMessages = await Message.countDocuments();
-        io.emit('stats', {
+        io.to(ROOM).emit('stats', {
           totalMessages,
           totalUsers,
           activeUsers: connectedUsers.size
@@ -100,27 +102,27 @@ export const initializeSocket = (io: Server) => {
       }
     });
 
-    // Handle typing
+    // Handle typing events (room only)
     socket.on('typing', () => {
-      socket.broadcast.emit('userTyping', { username: user.username });
+      socket.to(ROOM).emit('userTyping', { username: user.username });
     });
 
     socket.on('stopTyping', () => {
-      socket.broadcast.emit('userStopTyping', { username: user.username });
+      socket.to(ROOM).emit('userStopTyping', { username: user.username });
     });
 
     // Handle disconnect
-    socket.on('disconnect', async () => {
+    socket.on('disconnect', () => {
       console.log(`User disconnected: ${user.username}`);
       connectedUsers.delete(socket.id);
 
-      socket.broadcast.emit('userLeft', {
+      socket.to(ROOM).emit('userLeft', {
         username: user.username,
         timestamp: new Date()
       });
 
       // Update stats
-      io.emit('stats', {
+      io.to(ROOM).emit('stats', {
         totalMessages,
         totalUsers,
         activeUsers: connectedUsers.size
