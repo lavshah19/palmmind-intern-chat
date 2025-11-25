@@ -1,0 +1,65 @@
+import { Request, Response } from 'express';
+import User from '../models/User';
+import { generateToken } from '../utils/jwt';
+import { AuthRequest } from '../types';
+
+export const register = async (req: Request, res: Response) => {
+  try {
+    const { username, email, password } = req.body;
+
+    const user = await User.create({ username, email, password });
+
+    const token = generateToken(user._id.toString());
+
+    res.status(201).json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email
+      }
+    });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+export const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: 'Please provide email and password' });
+    }
+
+    const user = await User.findOne({ email }).select('+password');
+
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+
+    const token = generateToken(user._id.toString());
+
+    res.status(200).json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email
+      }
+    });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+export const getMe = async (req: AuthRequest, res: Response) => {
+  try {
+    const user = await User.findById(req.user?.id);
+    res.status(200).json({ success: true, user });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
