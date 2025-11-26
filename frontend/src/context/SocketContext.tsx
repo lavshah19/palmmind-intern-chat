@@ -9,7 +9,7 @@ import { getOlderMessages } from "@/service/api/chat";
 
 export const SocketContext = createContext<SocketContextType | null>(null);
 
-const SOCKET_URL = "http://localhost:5000"; 
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL; 
 
 export default function SocketProvider({ children }: { children: ReactNode }) {
   const { authUser } = useAuth();
