@@ -24,7 +24,7 @@ const MessageList: React.FC = () => {
     if (!isLoadingOlder && messagesContainerRef.current) {
       const container = messagesContainerRef.current;
       const isScrolledToBottom =
-        container.scrollHeight - container.scrollTop <= container.clientHeight + 100;
+        container.scrollHeight - container.scrollTop <= container.clientHeight + 100; // this 
 
       if (isScrolledToBottom) {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -59,7 +59,7 @@ const MessageList: React.FC = () => {
     <div
       ref={messagesContainerRef}
       onScroll={handleScroll}
-      className="flex-1 overflow-y-auto p-4 bg-gray-50"
+      className="flex-1 overflow-y-auto p-4 bg-gray-50 "
     >
       {/* Loading indicator for older messages */}
       {isLoadingOlder && (

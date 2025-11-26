@@ -67,7 +67,7 @@ export const initializeSocket = (io: Server) => {
     // Load recent 50 messages
     const recentMessages = await Message.find()
       .sort({ createdAt: -1 })
-      .limit(50)
+      .limit(20)
       .lean();
 
     socket.emit('loadMessages', recentMessages.reverse());

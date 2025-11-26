@@ -12,6 +12,7 @@ import {
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [signInFormData, setSignInFormData] = useState<MyFormData>(
@@ -31,6 +32,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const [activeTab, setActiveTab] = useState("signin");
+  const navigate = useNavigate();
 
   const handelRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -59,6 +61,10 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         setAuthUser({ authenticate: true, user: data.user });
         setSignInFormData(initialSignInFormData);
         toast.success(data.message);
+        setTimeout(() => {
+          navigate("/chat");
+        });
+        // navigate("/chat");
       } else {
         toast.error(data.message);
         setAuthUser({ authenticate: false, user: null });

@@ -7,6 +7,7 @@ import { Toaster } from "sonner"
 import RouteGard from "./components/route-gard"
 import { useAuth } from "./components/hooks/useAuth"
 import ChatPage from "./pages/chat/ChatPage"
+import HomePage from "./pages/home/Home"
 
 function App() {
   const {authUser} = useAuth();
@@ -18,7 +19,7 @@ function App() {
     <Routes>
       
       <Route path="/" element={
-       <h1>Home</h1>
+      <HomePage/>
       } />
       <Route path="/auth" element={
         <RouteGard authenticated={authUser.authenticate} children={<Auth/>}/>
@@ -29,7 +30,7 @@ function App() {
       } />
     </Routes>
 
-      <Toaster />
+      <Toaster position="top-center" duration={2000}/>
    </>
   )
 }

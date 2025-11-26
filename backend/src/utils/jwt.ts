@@ -15,7 +15,7 @@ export function generateToken(id: string): string {
 // };
 
 export const verifyToken = (token: string): any => {
-  console.log("inside verifyToken",token);
+  // console.log("inside verifyToken",token);
 const decoded = (jwt.verify(token, JWT_SECRET )as {
     id: string;
   });

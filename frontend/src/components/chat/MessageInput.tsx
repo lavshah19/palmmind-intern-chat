@@ -39,7 +39,7 @@ const MessageInput: React.FC = () => {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     return () => {
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);
