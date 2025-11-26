@@ -3,7 +3,7 @@ import {
   initialSignInFormData,
   initialSignUpFormData,
 } from "../config/authConfig";
-import type { AuthContextType, MyFormData,  } from "../types";
+import type { AuthContextType, AuthUser, CheckAuthResponse, MyFormData,  } from "../types";
 import {
   checkAuthService,
   loginUserService,
@@ -22,7 +22,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     initialSignUpFormData
   );
 
-  const [authUser, setAuthUser] = useState({
+  const [authUser, setAuthUser] = useState<AuthUser>({
     authenticate: false,
     user: null,
   });
@@ -71,9 +71,9 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkAuth = async () => {
     try {
-      const data = await checkAuthService();
+      const data:CheckAuthResponse = await checkAuthService();
       if (data.success) {
-        setAuthUser({ authenticate: true, user: data.user });
+        setAuthUser({ authenticate: true, user: data?.user });
       } else {
         setAuthUser({ authenticate: false, user: null });
       }
@@ -90,6 +90,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   const logOut = () => {
     setAuthUser({ authenticate: false, user: null });
+    sessionStorage.removeItem("token");
   };
 
   return (
@@ -110,7 +111,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         logOut,
       }}
     >
-      {isLoading ? null : children}
+      {isLoading ? null : children} 
+      {/* // i will add isLoading ui later reminder */}
     </AuthContext.Provider>
   );
 }

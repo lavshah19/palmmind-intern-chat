@@ -17,7 +17,7 @@ function App() {
     <Routes>
       
       <Route path="/" element={
-        <RouteGard authenticated={authUser.authenticate} children={<h1>Home</h1>}/>
+       <h1>Home</h1>
       } />
       <Route path="/auth" element={
         <RouteGard authenticated={authUser.authenticate} children={<Auth/>}/>

@@ -10,6 +10,7 @@ import statsRoutes from "./routes/statsRoutes";
 import { errorHandler } from "./middleware/errorHandler";
 import { initializeSocket } from "./socket/socketHandler";
 import User from "./models/User";
+import messageRoutes from "./routes/messageRoutes";
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.use("/api/users", userRoutes);
 
 // Stats endpoint
 app.use("/api", statsRoutes);
+app.use("/api/messages", messageRoutes);
 
 // Health check
 app.get("/health", (req, res) => {

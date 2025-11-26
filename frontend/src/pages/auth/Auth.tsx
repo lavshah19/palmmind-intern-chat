@@ -1,5 +1,5 @@
 
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import {
@@ -57,13 +57,13 @@ const AuthPage = () => {
     // console.log(signInFormData);
     return (
         <div className="flex flex-col min-h-screen">
-            <header className="px-4 lg:px-5 h-15 flex items-center border-b">
+            {/* <header className="px-4 lg:px-5 h-15 flex items-center border-b">
                 <Link to={"/"} className="flex items-center justify-center">
                     <span className="font-extrabold text-xl">Palmmind</span>
 
                 </Link>
 
-            </header>
+            </header> */}
             <div className="flex items-center justify-center min-h-screen bg-background ">
                 <Tabs defaultValue="signin" value={activeTab}
                     onValueChange={handelTabChange}

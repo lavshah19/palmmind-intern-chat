@@ -1,62 +1,87 @@
-import React, { useState } from 'react'
-import { MessageCircle, Menu, X, User } from 'lucide-react'
+import React, { useState, useRef, useEffect } from 'react'
+import { MessageCircle, User, LogOut } from 'lucide-react'
+import { useAuth } from '../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
+import { Button } from '../ui/button'
 
 const Navbar: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { authUser, logOut } = useAuth()
+  const navigate = useNavigate()
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as HTMLElement)) {
+        setIsDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const handleLogout = () => {
+    logOut()
+    setIsDropdownOpen(false)
+    navigate('/auth')
   }
 
   return (
-    <nav className="bg-linear-to-r from-purple-600 to-indigo-600 shadow-lg">
+    <nav className="bg-white border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo & Brand */}
-          <div className="flex items-center space-x-2">
-            <div className="bg-white p-2 rounded-lg">
-              <MessageCircle className="w-6 h-6 text-purple-600" />
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
+            <div className="bg-purple-100 p-2 rounded-lg">
+              <MessageCircle className="w-6 h-6" />
             </div>
-            <span className="text-white text-xl font-bold">Palmmind Chat</span>
+            <span className="text-gray-900 text-xl font-bold">Palmmind Chat</span>
           </div>
 
-          {/* User Profile - Desktop */}
-          <div className="hidden md:flex items-center space-x-3">
-            <div className="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center cursor-pointer hover:bg-purple-400 transition-colors">
-              <User className="w-5 h-5 text-purple-800" />
-            </div>
-          </div>
+          {/* User Profile or Auth Button */}
+          {authUser.authenticate && authUser.user ? (
+            <div className="relative" ref={dropdownRef}>
+              <div
+                className="flex items-center space-x-3 cursor-pointer"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                <span className="text-gray-700 font-medium hidden sm:block">
+                  {authUser.user.username}
+                </span>
+                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center hover:bg-purple-200 transition-colors">
+                  <User className="w-5 h-5 text-purple-600" />
+                </div>
+              </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              onClick={toggleMenu}
-              className="text-white p-2 rounded-md hover:bg-purple-700 transition-colors"
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                  <div className="px-4 py-2 border-b border-gray-200">
+                    <p className="text-sm font-medium text-gray-900">{authUser.user.username}</p>
+                    <p className="text-xs text-gray-500 truncate">{authUser.user.email}</p>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Logout</span>
+                  </button>
+                </div>
               )}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <div 
-        className={`md:hidden transition-all duration-300 ease-in-out ${
-          isMenuOpen ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-        }`}
-      >
-        <div className="px-2 pt-2 pb-3 bg-purple-700">
-          <div className="px-3 py-2 flex items-center space-x-3">
-            <div className="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center">
-              <User className="w-5 h-5 text-purple-800" />
             </div>
-            <span className="text-white">Profile</span>
-          </div>
+          ) : (
+            <Button
+              onClick={() => navigate('/auth')}
+              className=" text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+              variant="default"
+            >
+              Chat with us
+            </Button>
+          
+          )}
         </div>
       </div>
     </nav>

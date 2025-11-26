@@ -10,8 +10,18 @@ export type SignUpFormData = {
 };
 export type CheckAuthResponse = {
   success: boolean;
-  user?: any;
+  user: User | null;
 };
+export type User = {
+  id: string;
+  username: string;
+  email: string;
+};
+export type AuthUser={
+    authenticate: boolean;
+    user: User | null;
+}
+
 export type AuthContextType = {
   signInFormData: MyFormData;
   setSignInFormData: React.Dispatch<React.SetStateAction<MyFormData>>;
@@ -21,12 +31,12 @@ export type AuthContextType = {
 
   authUser: {
     authenticate: boolean;
-    user: any;
+    user: User | null;
   };
   setAuthUser: React.Dispatch<
     React.SetStateAction<{
       authenticate: boolean;
-      user: any;
+      user: User | null;
     }>
   >;
 
