@@ -1,4 +1,4 @@
-import type { FormControlsProps, FormControlType, MyFormData} from "@/types";
+import type { FormControlsProps, FormControlType, MyFormData} from "@/types/auth";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import {

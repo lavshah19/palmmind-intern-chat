@@ -1,5 +1,5 @@
 import axiosInstance from "../../api/axiosInstance";
-import type { MyFormData,} from "../../types";
+import type { MyFormData,} from "../../types/auth";
 
 
 export async function registerUserService(signupFormdata:MyFormData) {

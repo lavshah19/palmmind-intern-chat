@@ -3,12 +3,12 @@ import {
   initialSignInFormData,
   initialSignUpFormData,
 } from "../config/authConfig";
-import type { AuthContextType, AuthUser, CheckAuthResponse, MyFormData,  } from "../types";
+import type { AuthContextType, AuthUser, CheckAuthResponse, MyFormData,  } from "../types/auth";
 import {
   checkAuthService,
   loginUserService,
   registerUserService,
-} from "../service/api";
+} from "../service/api/auth";
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 import { toast } from "sonner";

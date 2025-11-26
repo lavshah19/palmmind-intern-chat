@@ -4,6 +4,6 @@ import { getOlderMessages } from "../controllers/messgaeController";
 const router = express.Router();
 
 
-router.get("older",protect,getOlderMessages); 
+router.get("/older",protect,getOlderMessages); 
 
-export default router;
+export default router;  

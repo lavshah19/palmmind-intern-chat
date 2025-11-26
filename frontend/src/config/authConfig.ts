@@ -1,4 +1,4 @@
-import type { FormControlType, SignInFormData, SignUpFormData } from "../types";
+import type { FormControlType, SignInFormData, SignUpFormData } from "../types/auth";
 
 export const signUpFormControls:FormControlType[]=[
     {

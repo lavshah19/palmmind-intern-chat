@@ -1,4 +1,4 @@
-import type { CommonFormProps } from "@/types";
+import type { CommonFormProps } from "@/types/auth";
 import { Button } from "../ui/button";
 
 

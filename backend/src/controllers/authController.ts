@@ -62,7 +62,7 @@ export const login = async (req: Request, res: Response) => {
 export const getMe = async (req: AuthRequest, res: Response) => {
   try {
     console.log("i am inside getMe");
-    const user = await User.findById(req.user?.id);
+    const user = await User.findById(req.user?.id).select('-password');
     res.status(200).json({ success: true, user,message: 'User fetched successfully' });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message, user: null });

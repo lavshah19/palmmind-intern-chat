@@ -6,6 +6,7 @@ import Auth from "./pages/auth/Auth"
 import { Toaster } from "sonner"
 import RouteGard from "./components/route-gard"
 import { useAuth } from "./components/hooks/useAuth"
+import ChatPage from "./pages/chat/ChatPage"
 
 function App() {
   const {authUser} = useAuth();
@@ -22,7 +23,12 @@ function App() {
       <Route path="/auth" element={
         <RouteGard authenticated={authUser.authenticate} children={<Auth/>}/>
       } />
+   
+      <Route path="/chat" element={
+        <RouteGard authenticated={authUser.authenticate} children={<ChatPage/>}/>
+      } />
     </Routes>
+
       <Toaster />
    </>
   )
