@@ -1,7 +1,5 @@
 import { createContext, useEffect, useState, useCallback, type ReactNode } from "react";
 import { io, Socket } from "socket.io-client";
-
-
 import { toast } from "sonner";
 import type { Message, Stats, SocketContextType } from "@/types/chat";
 import { useAuth } from "@/components/hooks/useAuth";
@@ -22,7 +20,7 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
   const [isLoadingOlder, setIsLoadingOlder] = useState(false);
   
 
-  // Initialize socket connection
+
   useEffect(() => {
     if (!authUser.authenticate) return;
 

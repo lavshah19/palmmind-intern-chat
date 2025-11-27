@@ -1,3 +1,5 @@
+import type { Socket } from "socket.io-client";
+
 export interface Message {
   _id: string;
   user: string;
@@ -18,7 +20,7 @@ export interface UserEvent {
 }
 
 export interface SocketContextType {
-  socket: any;
+  socket: Socket | null;
   isConnected: boolean;
   messages: Message[];
   stats: Stats | null;

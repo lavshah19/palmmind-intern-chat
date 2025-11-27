@@ -10,8 +10,8 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
       return res.status(401).json({ success: false, message: "Not authorized" });
     }
 
-    const token = authHeader.split(" ")[1]; // remove 'Bearer '
-    const decoded = verifyToken(token);    // pass only raw token
+    const token = authHeader.split(" ")[1]; 
+    const decoded = verifyToken(token);  
 
     const user = await User.findById(decoded.id).select("-password");
     if (!user) {

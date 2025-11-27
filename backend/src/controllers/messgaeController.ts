@@ -10,9 +10,9 @@ export const getOlderMessages = async (req: Request, res: Response) => {
       : {};
 
     const messages = await Message.find(filter)
-      .sort({ _id: -1 }) // this will sort by _id in descending order
-      .limit(30) // limit garxa 30 messages
-      .lean(); // this will return the messages as plain objects
+      .sort({ _id: -1 }) 
+      .limit(30)
+      .lean(); 
 
     return res.json({
       success: true,
