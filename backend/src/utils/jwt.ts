@@ -13,6 +13,6 @@ export const verifyToken = (token: string): any => {
 const decoded = (jwt.verify(token, JWT_SECRET )as {
     id: string;
   });
-  console.log(decoded,"decoded");
+  // console.log(decoded,"decoded");
   return decoded;
 };

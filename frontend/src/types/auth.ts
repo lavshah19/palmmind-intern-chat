@@ -99,3 +99,16 @@ export type  ApiError={
   message: string;
   success: boolean
 }
+
+export type RegisterResponse = {
+  success: boolean;
+  user?: User;
+  message: string;
+}
+
+export type LoginResponse = {
+  success: boolean;
+  token: string | null;
+  user: User | null;
+  message: string;
+}

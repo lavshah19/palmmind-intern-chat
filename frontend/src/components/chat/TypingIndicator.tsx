@@ -15,13 +15,15 @@ const TypingIndicator: React.FC<TypingIndicatorProps> = ({ typingUsers }) => {
       : `${typingUsers.length} people are typing...`;
 
   return (
-    <div className="px-4 py-2 text-sm text-gray-500 italic">
-      {displayText}
-      <span className="typing-dots ml-1">
-        <span className="dot">.</span>
-        <span className="dot">.</span>
-        <span className="dot">.</span>
-      </span>
+    <div className="px-4 py-3 mb-2">
+      <div className="items-center space-x-2 text-sm text-gray-500 italic bg-white rounded-lg px-3 py-2 inline-flex shadow-sm">
+        <span>{displayText}</span>
+        <span className="typing-dots">
+          <span className="dot">.</span>
+          <span className="dot">.</span>
+          <span className="dot">.</span>
+        </span>
+      </div>
     </div>
   );
 };

@@ -19,12 +19,12 @@ const MessageList: React.FC = () => {
     }
   }, [messages, isInitialLoad]);
 
-  // Auto-scroll only for new messages (not when loading older also scrolls to bottom when it reach certain points)
+  // Auto-scroll only for new messages not when loading older
   useEffect(() => {
     if (!isLoadingOlder && messagesContainerRef.current) {
       const container = messagesContainerRef.current;
       const isScrolledToBottom =
-        container.scrollHeight - container.scrollTop <= container.clientHeight + 100;  
+        container.scrollHeight - container.scrollTop <= container.clientHeight + 100;
 
       if (isScrolledToBottom) {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -59,7 +59,7 @@ const MessageList: React.FC = () => {
     <div
       ref={messagesContainerRef}
       onScroll={handleScroll}
-      className="flex-1 overflow-y-auto p-4 bg-gray-50 "
+      className="flex-1 overflow-y-auto p-4 pb-6 bg-gray-50"
     >
       {/* Loading indicator for older messages */}
       {isLoadingOlder && (
@@ -83,8 +83,8 @@ const MessageList: React.FC = () => {
       {/* Typing indicator */}
       <TypingIndicator typingUsers={typingUsers} />
 
-      {/* Scroll to bottom ref */}
-      <div ref={messagesEndRef} />
+      {/* Scroll anchor with extra space */}
+      <div ref={messagesEndRef} className="h-4" />
     </div>
   );
 };

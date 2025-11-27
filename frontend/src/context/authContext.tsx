@@ -3,7 +3,7 @@ import {
   initialSignInFormData,
   initialSignUpFormData,
 } from "../config/authConfig";
-import type { ApiError, AuthContextType, AuthUser, CheckAuthResponse, MyFormData,  } from "../types/auth";
+import type { ApiError, AuthContextType, AuthUser, CheckAuthResponse, LoginResponse, MyFormData, RegisterResponse,  } from "../types/auth";
 import {
   checkAuthService,
   loginUserService,
@@ -28,7 +28,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     authenticate: false,
     user: null,
   });
-  console.log(signUpFormData)
+  // console.log(signUpFormData)
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -38,7 +38,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const handelRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      const data = await registerUserService(signUpFormData);
+      const data:RegisterResponse = await registerUserService(signUpFormData);
       if (data.success) {
         setSignUpFormData(initialSignUpFormData);
         setActiveTab("signin");
@@ -52,12 +52,12 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       toast.error(err.response?.data.message || "Something went wrong");
     }
   };
-  console.log(signInFormData)
+  // console.log(signInFormData)
 
   const handelLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      const data = await loginUserService(signInFormData);
+      const data:LoginResponse = await loginUserService(signInFormData);
       if (data.success) {
         sessionStorage.setItem("token", JSON.stringify(data.token));
         setAuthUser({ authenticate: true, user: data.user });
