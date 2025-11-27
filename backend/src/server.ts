@@ -9,7 +9,6 @@ import userRoutes from "./routes/userRoutes";
 import statsRoutes from "./routes/statsRoutes";
 import { errorHandler } from "./middleware/errorHandler";
 import { initializeSocket } from "./socket/socketHandler";
-import User from "./models/User";
 import messageRoutes from "./routes/messageRoutes";
 
 dotenv.config();
@@ -41,15 +40,6 @@ app.get("/health", (req, res) => {
   res.json({ status: "OK", timestamp: new Date() });
 });
 
-// get all user api  for testing purposes
-// app.get("/api/users", async (req, res) => {
-//   try {
-//     const users = await User.find().select('-password');
-//     res.status(200).json({ success: true, count: users.length, users });
-//   } catch (error: any) {
-//     res.status(400).json({ successss: false, message: error.message });
-//   }
-// })
 // Error handler
 app.use(errorHandler);
 

@@ -36,7 +36,7 @@ export const initializeSocket = (io: Server) => {
     const user = socket.data.user;
     console.log(`User connected: ${user.username}`);
 
-    // Join the hardcoded room
+    // Join the room
     socket.join(ROOM);
 
     // Add user to connected users
@@ -58,7 +58,7 @@ export const initializeSocket = (io: Server) => {
       activeUsers
     });
 
-    // Notify that user joined (to room only)
+    // Notify that user joined 
     socket.to(ROOM).emit('userJoined', {
       username: user.username,
       timestamp: new Date()
@@ -72,7 +72,7 @@ export const initializeSocket = (io: Server) => {
 
     socket.emit('loadMessages', recentMessages.reverse());
 
-    // Handle new message (inside room only)
+    // Handle new message events
     socket.on('sendMessage', async (data: { message: string}) => {
       try {
         const newMessage = await Message.create({
@@ -102,7 +102,7 @@ export const initializeSocket = (io: Server) => {
       }
     });
 
-    // Handle typing events (room only)
+    // Handle typing events 
     socket.on('typing', () => {
       socket.to(ROOM).emit('userTyping', { username: user.username });
     });

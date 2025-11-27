@@ -23,7 +23,6 @@ const MessageSchema = new Schema<IMessage>({
   }
 });
 
-// Index for faster queries
 MessageSchema.index({ createdAt: -1 });
 
 export default mongoose.model<IMessage>('Message', MessageSchema);

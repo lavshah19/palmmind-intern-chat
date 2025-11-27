@@ -4,7 +4,7 @@ import { protect } from '../middleware/auth';
 
 const router = Router();
 
-router.use(protect); // All routes are protected
+router.use(protect); 
 
 router.get('/', getAllUsers);
 router.get('/:id', getUser);

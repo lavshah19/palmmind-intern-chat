@@ -3,6 +3,7 @@ import User from '../models/User';
 import { generateToken } from '../utils/jwt';
 import { AuthRequest } from '../types';
 
+
 export const register = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;

@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import User from '../models/User';
 import { AuthRequest } from '../types';
-
+//for now base on task requirement it not ask but i make this controllers if in future it can be used to get users by id and so more like showing userd profile etc 
 export const getAllUsers = async (req: AuthRequest, res: Response) => {
   try {
     const users = await User.find().select('-password');
@@ -10,7 +10,6 @@ export const getAllUsers = async (req: AuthRequest, res: Response) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
-
 
 export const getUser = async (req: AuthRequest, res: Response) => {
   try {

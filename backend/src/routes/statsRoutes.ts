@@ -4,7 +4,7 @@ import Message from '../models/Message';
 import User from '../models/User';
 
 const router = Router();
-router.get("/stats",async (req, res) => {
+router.get("/stats", protect, async (req, res) => {
   try {
     const totalMessages = await Message.countDocuments();
     const totalUsers = await User.countDocuments();
