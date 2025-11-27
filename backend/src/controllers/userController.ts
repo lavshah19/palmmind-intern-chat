@@ -2,7 +2,7 @@ import { Response, NextFunction } from "express";
 import User from "../models/User";
 import { AuthRequest } from "../types";
 import { CustomError } from "../utils/customError";
-
+//for now base on task requirement it not ask but i make this controllers if in future it can be used to get users by id and so more like showing userd profile etc 
 // GET ALL USERS
 export const getAllUsers = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
