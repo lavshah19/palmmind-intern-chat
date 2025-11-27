@@ -3,7 +3,7 @@ import {
   initialSignInFormData,
   initialSignUpFormData,
 } from "../config/authConfig";
-import type { AuthContextType, AuthUser, CheckAuthResponse, MyFormData,  } from "../types/auth";
+import type { ApiError, AuthContextType, AuthUser, CheckAuthResponse, MyFormData,  } from "../types/auth";
 import {
   checkAuthService,
   loginUserService,
@@ -13,6 +13,7 @@ import {
 export const AuthContext = createContext<AuthContextType | null>(null);
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import type { AxiosError } from "axios";
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [signInFormData, setSignInFormData] = useState<MyFormData>(
@@ -46,8 +47,9 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
+      const err = error as AxiosError<ApiError>;
+      console.log(err);
+      toast.error(err.response?.data.message || "Something went wrong");
     }
   };
   console.log(signInFormData)
@@ -64,14 +66,14 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         setTimeout(() => {
           navigate("/chat");
         });
-        // navigate("/chat");
       } else {
         toast.error(data.message);
         setAuthUser({ authenticate: false, user: null });
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
+      const err = error as AxiosError<ApiError>;
+      console.log(err);
+      toast.error( err.response?.data.message || "Something went wrong");
     }
   };
 

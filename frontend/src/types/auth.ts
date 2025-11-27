@@ -95,3 +95,7 @@ export type FormControlsProps = {
 };
 
 
+export type  ApiError={
+  message: string;
+  success: boolean
+}
