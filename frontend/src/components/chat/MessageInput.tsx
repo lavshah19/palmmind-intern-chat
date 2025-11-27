@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Send } from "lucide-react";
 import { useSocket } from "../hooks/useSocket";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 const MessageInput: React.FC = () => {
   const [message, setMessage] = useState("");
@@ -53,20 +55,20 @@ const MessageInput: React.FC = () => {
       className="border-t border-gray-200 p-4 bg-white"
     >
       <div className="flex items-center space-x-2">
-        <input
+        <Input
           type="text"
           value={message}
           onChange={(e) => handleTyping(e.target.value)}
           placeholder="Type a message..."
           className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
         />
-        <button
+        <Button
           type="submit"
           disabled={!message.trim()}
           className="bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
           <Send className="w-5 h-5" />
-        </button>
+        </Button>
       </div>
     </form>
   );
