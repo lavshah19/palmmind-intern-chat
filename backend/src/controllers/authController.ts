@@ -1,20 +1,20 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import User from "../models/User";
 import { generateToken } from "../utils/jwt";
 import { AuthRequest } from "../types";
+import { CustomError } from "../utils/customError";
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { username, email, password } = req.body;
-    //check if user email and username already exist
+
     const userExists = await User.findOne({ $or: [{ email }, { username }] });
     if (userExists) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User already exists" });
+      return next(new CustomError("User already exists", 400));
     }
 
     const user = await User.create({ username, email, password });
+
     res.status(201).json({
       success: true,
       user: {
@@ -24,27 +24,23 @@ export const register = async (req: Request, res: Response) => {
       },
       message: "User created successfully",
     });
-  } catch (error: any) {
-    res.status(400).json({ success: false, message: error.message });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Please provide email and password" });
+      return next(new CustomError("Please provide email and password", 400));
     }
 
     const user = await User.findOne({ email }).select("+password");
 
     if (!user || !(await user.comparePassword(password))) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid credentials" });
+      return next(new CustomError("Invalid credentials", 401));
     }
 
     const token = generateToken(user._id.toString());
@@ -59,28 +55,25 @@ export const login = async (req: Request, res: Response) => {
       },
       message: "Login successful",
     });
-  } catch (error: any) {
-    res
-      .status(400)
-      .json({
-        success: false,
-        token: null,
-        user: null,
-        message: error.message,
-      });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const getMe = async (req: AuthRequest, res: Response) => {
+export const getMe = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    console.log("i am inside getMe");
     const user = await User.findById(req.user?.id).select("-password");
-    res
-      .status(200)
-      .json({ success: true, user, message: "User fetched successfully" });
-  } catch (error: any) {
-    res
-      .status(400)
-      .json({ success: false, message: error.message, user: null });
+
+    if (!user) {
+      return next(new CustomError("User not found", 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+      message: "User fetched successfully",
+    });
+  } catch (error) {
+    next(error);
   }
 };
