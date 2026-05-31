@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Send } from "lucide-react";
-import { useSocket } from "../hooks/useSocket";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import React, { useState, useRef, useEffect } from 'react';
+import { Send } from 'lucide-react';
+import { useSocket } from '../hooks/useSocket';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 
 const MessageInput: React.FC = () => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const { sendMessage, startTyping, stopTyping } = useSocket();
   const typingTimeoutRef = useRef<number | null>(null);
 
@@ -33,7 +33,7 @@ const MessageInput: React.FC = () => {
     e.preventDefault();
     if (message.trim()) {
       sendMessage(message);
-      setMessage("");
+      setMessage('');
       stopTyping();
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);
@@ -41,7 +41,7 @@ const MessageInput: React.FC = () => {
     }
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     return () => {
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);
@@ -50,10 +50,7 @@ const MessageInput: React.FC = () => {
   }, []);
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="border-t border-gray-200 p-4 bg-white"
-    >
+    <form onSubmit={handleSubmit} className="border-t border-gray-200 p-4 bg-white">
       <div className="flex items-center space-x-2">
         <Input
           type="text"

@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import MessageItem from "./MessageItem";
-import TypingIndicator from "./TypingIndicator";
-import { Loader2 } from "lucide-react";
-import { useSocket } from "../hooks/useSocket";
+import React, { useEffect, useRef, useState } from 'react';
+import MessageItem from './MessageItem';
+import TypingIndicator from './TypingIndicator';
+import { Loader2 } from 'lucide-react';
+import { useSocket } from '../hooks/useSocket';
 
 const MessageList: React.FC = () => {
   const { messages, typingUsers, loadOlderMessages, hasMoreMessages, isLoadingOlder } = useSocket();
@@ -14,7 +14,7 @@ const MessageList: React.FC = () => {
   // Scroll to bottom on initial load and new messages
   useEffect(() => {
     if (isInitialLoad && messages.length > 0) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
       setIsInitialLoad(false);
     }
   }, [messages, isInitialLoad]);
@@ -27,7 +27,7 @@ const MessageList: React.FC = () => {
         container.scrollHeight - container.scrollTop <= container.clientHeight + 100;
 
       if (isScrolledToBottom) {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
       }
     }
   }, [messages.length, isLoadingOlder]);
@@ -46,7 +46,7 @@ const MessageList: React.FC = () => {
   const handleScroll = () => {
     if (messagesContainerRef.current) {
       const container = messagesContainerRef.current;
-      
+
       // Load older messages when scrolled to top
       if (container.scrollTop === 0 && hasMoreMessages && !isLoadingOlder) {
         setPreviousScrollHeight(container.scrollHeight);
@@ -70,9 +70,7 @@ const MessageList: React.FC = () => {
 
       {/* No more messages indicator */}
       {!hasMoreMessages && messages.length > 0 && (
-        <div className="text-center text-sm text-gray-500 py-2">
-          No more messages
-        </div>
+        <div className="text-center text-sm text-gray-500 py-2">No more messages</div>
       )}
 
       {/* Messages */}

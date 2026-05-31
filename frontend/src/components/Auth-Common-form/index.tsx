@@ -1,10 +1,7 @@
-import type { CommonFormProps } from "@/types/auth";
-import { Button } from "../ui/button";
+import type { CommonFormProps } from '@/types/auth';
+import { Button } from '../ui/button';
 
-
-import FormControls from "./from-control";
-
-
+import FormControls from './from-control';
 
 const CommonForm = ({
   handelSubmit,
@@ -16,13 +13,9 @@ const CommonForm = ({
 }: CommonFormProps) => {
   return (
     <form onSubmit={handelSubmit}>
-      <FormControls
-        formControls={formControls}
-        formData={formData}
-        setFormData={setFormData}
-      />
+      <FormControls formControls={formControls} formData={formData} setFormData={setFormData} />
       <Button disabled={isButtonDisabled} className="mt-4 w-full" type="submit">
-        {buttonText || "Submit"}
+        {buttonText || 'Submit'}
       </Button>
     </form>
   );

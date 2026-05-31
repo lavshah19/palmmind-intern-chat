@@ -5,7 +5,7 @@ export type SignInFormData = {
 
 export type SignUpFormData = {
   username: string;
-  email: string; 
+  email: string;
   password: string;
 };
 export type CheckAuthResponse = {
@@ -17,10 +17,10 @@ export type User = {
   username: string;
   email: string;
 };
-export type AuthUser={
-    authenticate: boolean;
-    user: User | null;
-}
+export type AuthUser = {
+  authenticate: boolean;
+  user: User | null;
+};
 
 export type AuthContextType = {
   signInFormData: MyFormData;
@@ -45,22 +45,22 @@ export type AuthContextType = {
   activeTab: string;
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
 
-  handelRegister: (e: React.FormEvent<HTMLFormElement>) => void;
-  handelLogin: (e: React.FormEvent<HTMLFormElement>) => void;
+  handelRegister: (_e: React.FormEvent<HTMLFormElement>) => void;
+  handelLogin: (_e: React.FormEvent<HTMLFormElement>) => void;
 
   checkAuth: () => Promise<void>;
   logOut: () => void;
 };
 
 export type InputType =
-  | "text"
-  | "email"
-  | "password"
-  | "number"
-  | "date"
-  | "file"
-  | "checkbox"
-  | "radio";
+  | 'text'
+  | 'email'
+  | 'password'
+  | 'number'
+  | 'date'
+  | 'file'
+  | 'checkbox'
+  | 'radio';
 
 export type FormControlType = {
   name: string;
@@ -68,8 +68,8 @@ export type FormControlType = {
   type: InputType;
   placeholder: string;
   required: boolean;
-  ComponentType: "input" | "textarea" | "select";
-  options?: { value: string; label: string,id:string }[];
+  ComponentType: 'input' | 'textarea' | 'select';
+  options?: { value: string; label: string; id: string }[];
 };
 
 export type MyFormData = {
@@ -78,9 +78,8 @@ export type MyFormData = {
   username?: string;
 };
 
-
 export type CommonFormProps = {
-  handelSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  handelSubmit: (_e: React.FormEvent<HTMLFormElement>) => void;
   buttonText?: string;
   formControls: FormControlType[];
   formData: MyFormData;
@@ -94,21 +93,20 @@ export type FormControlsProps = {
   setFormData: React.Dispatch<React.SetStateAction<MyFormData>>;
 };
 
-
-export type  ApiError={
+export type ApiError = {
   message: string;
-  success: boolean
-}
+  success: boolean;
+};
 
 export type RegisterResponse = {
   success: boolean;
   user?: User;
   message: string;
-}
+};
 
 export type LoginResponse = {
   success: boolean;
   token: string | null;
   user: User | null;
   message: string;
-}
+};

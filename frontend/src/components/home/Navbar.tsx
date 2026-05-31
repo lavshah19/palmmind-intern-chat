@@ -1,34 +1,34 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { MessageCircle, LogOut } from 'lucide-react'
-import { useAuth } from '../hooks/useAuth'
-import { useNavigate } from 'react-router-dom'
-import { Button } from '../ui/button'
+import React, { useState, useRef, useEffect } from 'react';
+import { MessageCircle, LogOut } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '../ui/button';
 
 const Navbar: React.FC = () => {
-  const { authUser, logOut } = useAuth()
-  const navigate = useNavigate()
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
+  const { authUser, logOut } = useAuth();
+  const navigate = useNavigate();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as HTMLElement)) {
-        setIsDropdownOpen(false)
+        setIsDropdownOpen(false);
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleLogout = () => {
-    logOut()
-    setIsDropdownOpen(false)
-    navigate('/auth')
-  }
+    logOut();
+    setIsDropdownOpen(false);
+    navigate('/auth');
+  };
 
-  const avatarUrl = authUser.user?.username 
+  const avatarUrl = authUser.user?.username
     ? `https://api.dicebear.com/9.x/adventurer/svg?seed=${authUser.user.username}`
     : '';
 
@@ -75,7 +75,9 @@ const Navbar: React.FC = () => {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">{authUser.user.username}</p>
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        {authUser.user.username}
+                      </p>
                       <p className="text-xs text-gray-500 truncate">{authUser.user.email}</p>
                     </div>
                   </div>
@@ -101,7 +103,7 @@ const Navbar: React.FC = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

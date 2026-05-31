@@ -1,15 +1,15 @@
-import express, { Application } from "express";
-import { createServer } from "http";
-import { Server } from "socket.io";
-import cors from "cors";
-import dotenv from "dotenv";
-import { connectDB } from "./config/database";
-import authRoutes from "./routes/authRoutes";
-import userRoutes from "./routes/userRoutes";
-import statsRoutes from "./routes/statsRoutes";
-import { errorHandler } from "./middleware/errorHandler";
-import { initializeSocket } from "./socket/socketHandler";
-import messageRoutes from "./routes/messageRoutes";
+import express, { Application } from 'express';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { connectDB } from './config/database';
+import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
+import statsRoutes from './routes/statsRoutes';
+import { errorHandler } from './middleware/errorHandler';
+import { initializeSocket } from './socket/socketHandler';
+import messageRoutes from './routes/messageRoutes';
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ const app: Application = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
     credentials: true,
   },
 });
@@ -25,19 +25,19 @@ const io = new Server(httpServer, {
 // Middleware
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); 
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Stats endpoint
-app.use("/api", statsRoutes);
-app.use("/api/messages", messageRoutes);
+app.use('/api', statsRoutes);
+app.use('/api/messages', messageRoutes);
 
 // Health check
-app.get("/health", (req, res) => {
-  res.json({ status: "OK", timestamp: new Date() });
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', timestamp: new Date() });
 });
 
 // Error handler
@@ -46,11 +46,8 @@ app.use(errorHandler);
 // Initialize Socket.IO
 initializeSocket(io);
 
-
-
 // Connect to database and start server
 const PORT = process.env.PORT || 5000;
-
 
 connectDB().then(() => {
   httpServer.listen(PORT, () => {

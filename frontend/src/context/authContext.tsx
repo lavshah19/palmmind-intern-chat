@@ -1,28 +1,25 @@
-import { createContext, useEffect, useState, type ReactNode } from "react";
-import {
-  initialSignInFormData,
-  initialSignUpFormData,
-} from "../config/authConfig";
-import type { ApiError, AuthContextType, AuthUser, CheckAuthResponse, LoginResponse, MyFormData, RegisterResponse,  } from "../types/auth";
-import {
-  checkAuthService,
-  loginUserService,
-  registerUserService,
-} from "../service/api/auth";
+import { createContext, useEffect, useState, type ReactNode } from 'react';
+import { initialSignInFormData, initialSignUpFormData } from '../config/authConfig';
+import type {
+  ApiError,
+  AuthContextType,
+  AuthUser,
+  CheckAuthResponse,
+  LoginResponse,
+  MyFormData,
+  RegisterResponse,
+} from '../types/auth';
+import { checkAuthService, loginUserService, registerUserService } from '../service/api/auth';
 
 export const AuthContext = createContext<AuthContextType | null>(null);
-import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
-import type { AxiosError } from "axios";
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import type { AxiosError } from 'axios';
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
-  const [signInFormData, setSignInFormData] = useState<MyFormData>(
-    initialSignInFormData
-  );
+  const [signInFormData, setSignInFormData] = useState<MyFormData>(initialSignInFormData);
 
-  const [signUpFormData, setSignUpFormData] = useState<MyFormData>(
-    initialSignUpFormData
-  );
+  const [signUpFormData, setSignUpFormData] = useState<MyFormData>(initialSignUpFormData);
 
   const [authUser, setAuthUser] = useState<AuthUser>({
     authenticate: false,
@@ -32,16 +29,16 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [activeTab, setActiveTab] = useState("signin");
+  const [activeTab, setActiveTab] = useState('signin');
   const navigate = useNavigate();
 
   const handelRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      const data:RegisterResponse = await registerUserService(signUpFormData);
+      const data: RegisterResponse = await registerUserService(signUpFormData);
       if (data.success) {
         setSignUpFormData(initialSignUpFormData);
-        setActiveTab("signin");
+        setActiveTab('signin');
         toast.success(data.message);
       } else {
         toast.error(data.message);
@@ -49,7 +46,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       const err = error as AxiosError<ApiError>;
       console.log(err);
-      toast.error(err.response?.data.message || "Something went wrong");
+      toast.error(err.response?.data.message || 'Something went wrong');
     }
   };
   // console.log(signInFormData)
@@ -57,14 +54,14 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const handelLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      const data:LoginResponse = await loginUserService(signInFormData);
+      const data: LoginResponse = await loginUserService(signInFormData);
       if (data.success) {
-        sessionStorage.setItem("token", JSON.stringify(data.token));
+        sessionStorage.setItem('token', JSON.stringify(data.token));
         setAuthUser({ authenticate: true, user: data.user });
         setSignInFormData(initialSignInFormData);
         toast.success(data.message);
         setTimeout(() => {
-          navigate("/chat");
+          navigate('/chat');
         });
       } else {
         toast.error(data.message);
@@ -73,13 +70,13 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       const err = error as AxiosError<ApiError>;
       console.log(err);
-      toast.error( err.response?.data.message || "Something went wrong");
+      toast.error(err.response?.data.message || 'Something went wrong');
     }
   };
 
   const checkAuth = async () => {
     try {
-      const data:CheckAuthResponse = await checkAuthService();
+      const data: CheckAuthResponse = await checkAuthService();
       if (data.success) {
         setAuthUser({ authenticate: true, user: data?.user });
       } else {
@@ -87,6 +84,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       }
     } catch (error) {
       setAuthUser({ authenticate: false, user: null });
+      console.error('Auth check failed:', error);
     } finally {
       setIsLoading(false);
     }
@@ -98,7 +96,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   const logOut = () => {
     setAuthUser({ authenticate: false, user: null });
-    sessionStorage.removeItem("token");
+    sessionStorage.removeItem('token');
   };
 
   return (
@@ -119,7 +117,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         logOut,
       }}
     >
-      {isLoading ? null : children} 
+      {isLoading ? null : children}
       {/* // i will add isLoading ui later reminder */}
     </AuthContext.Provider>
   );

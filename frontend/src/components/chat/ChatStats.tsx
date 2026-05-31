@@ -1,6 +1,6 @@
-import React from "react";
-import { Users, MessageSquare, Wifi, WifiOff, UserCheck } from "lucide-react";
-import { useSocket } from "../hooks/useSocket";
+import React from 'react';
+import { Users, MessageSquare, Wifi, WifiOff, UserCheck } from 'lucide-react';
+import { useSocket } from '../hooks/useSocket';
 
 const ChatStats: React.FC = () => {
   const { stats, isConnected } = useSocket();
@@ -16,7 +16,7 @@ const ChatStats: React.FC = () => {
               <WifiOff className="w-4 h-4 text-red-500" />
             )}
             <span className="text-sm text-gray-600">
-              {isConnected ? "Connected" : "Disconnected"}
+              {isConnected ? 'Connected' : 'Disconnected'}
             </span>
           </div>
 
@@ -24,22 +24,16 @@ const ChatStats: React.FC = () => {
             <>
               <div className="flex items-center space-x-2">
                 <UserCheck className="w-4 h-4 text-purple-600" />
-                <span className="text-sm text-gray-600">
-                  {stats.activeUsers} active
-                </span>
+                <span className="text-sm text-gray-600">{stats.activeUsers} active</span>
               </div>
 
               <div className="flex items-center space-x-2">
                 <MessageSquare className="w-4 h-4 text-purple-600" />
-                <span className="text-sm text-gray-600">
-                  {stats.totalMessages} messages
-                </span>
+                <span className="text-sm text-gray-600">{stats.totalMessages} messages</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Users className="w-4 h-4 text-purple-600" />{" "}
-                <span className="text-sm text-gray-600">
-                  {stats.totalUsers} total users
-                </span>
+                <Users className="w-4 h-4 text-purple-600" />{' '}
+                <span className="text-sm text-gray-600">{stats.totalUsers} total users</span>
               </div>
             </>
           )}

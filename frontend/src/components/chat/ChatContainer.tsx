@@ -1,7 +1,7 @@
-import React from "react";
-import MessageList from "./MessageList";
-import MessageInput from "./MessageInput";
-import ChatStats from "./ChatStats";
+import React from 'react';
+import MessageList from './MessageList';
+import MessageInput from './MessageInput';
+import ChatStats from './ChatStats';
 
 const ChatContainer: React.FC = () => {
   return (

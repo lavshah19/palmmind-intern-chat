@@ -1,7 +1,7 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { MessageCircle } from "lucide-react";
-import { useAuth } from "@/components/hooks/useAuth";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MessageCircle } from 'lucide-react';
+import { useAuth } from '@/components/hooks/useAuth';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -9,9 +9,9 @@ const HomePage: React.FC = () => {
 
   const handleGetStarted = () => {
     if (authUser.authenticate) {
-      navigate("/chat");
+      navigate('/chat');
     } else {
-      navigate("/auth");
+      navigate('/auth');
     }
   };
 
@@ -24,9 +24,7 @@ const HomePage: React.FC = () => {
           </div>
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-          Palmmind Chat
-        </h1>
+        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">Palmmind Chat</h1>
 
         <p className="text-xl md:text-2xl text-purple-100 mb-12">
           Connect and chat with people in real-time
@@ -36,7 +34,7 @@ const HomePage: React.FC = () => {
           onClick={handleGetStarted}
           className="bg-white text-purple-600 px-10 py-4 rounded-xl font-semibold text-lg hover:bg-purple-50 transition-all duration-200 shadow-xl hover:shadow-2xl"
         >
-          {authUser.authenticate ? "Go to Chat" : "Get Started"}
+          {authUser.authenticate ? 'Go to Chat' : 'Get Started'}
         </button>
       </div>
     </div>

@@ -6,16 +6,16 @@ import { AuthRequest } from '../types';
 export const protect = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ success: false, message: "Not authorized" });
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ success: false, message: 'Not authorized' });
     }
 
-    const token = authHeader.split(" ")[1]; 
-    const decoded = verifyToken(token);  
+    const token = authHeader.split(' ')[1];
+    const decoded = verifyToken(token);
 
-    const user = await User.findById(decoded.id).select("-password");
+    const user = await User.findById(decoded.id).select('-password');
     if (!user) {
-      return res.status(401).json({ success: false, message: "User not found" });
+      return res.status(401).json({ success: false, message: 'User not found' });
     }
 
     req.user = {
@@ -27,6 +27,6 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
     next();
   } catch (error) {
     console.error(error);
-    res.status(401).json({ success: false, message: "Not authorized" });
+    res.status(401).json({ success: false, message: 'Not authorized' });
   }
 };

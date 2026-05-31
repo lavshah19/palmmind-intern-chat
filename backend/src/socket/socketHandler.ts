@@ -3,7 +3,7 @@ import Message from '../models/Message';
 import { verifyToken } from '../utils/jwt';
 import User from '../models/User';
 import { SocketUser } from '../types';
-const ROOM = "palmmind:Room"; 
+const ROOM = 'palmmind:Room';
 const connectedUsers: Map<string, SocketUser> = new Map();
 export const initializeSocket = (io: Server) => {
   io.use(async (socket: Socket, next) => {
@@ -23,12 +23,13 @@ export const initializeSocket = (io: Server) => {
       socket.data.user = {
         id: user._id.toString(),
         username: user.username,
-        email: user.email
+        email: user.email,
       };
 
       next();
     } catch (error) {
       next(new Error('Authentication error'));
+      console.error('Socket authentication error:', error);
     }
   });
 
@@ -43,7 +44,7 @@ export const initializeSocket = (io: Server) => {
     connectedUsers.set(socket.id, {
       userId: user.id,
       username: user.username,
-      socketId: socket.id
+      socketId: socket.id,
     });
 
     // Statistics
@@ -55,30 +56,27 @@ export const initializeSocket = (io: Server) => {
     io.to(ROOM).emit('stats', {
       totalMessages,
       totalUsers,
-      activeUsers
+      activeUsers,
     });
 
-    // Notify that user joined 
+    // Notify that user joined
     socket.to(ROOM).emit('userJoined', {
       username: user.username,
-      timestamp: new Date()
+      timestamp: new Date(),
     });
 
     // Load recent 50 messages
-    const recentMessages = await Message.find()
-      .sort({ createdAt: -1 })
-      .limit(20)
-      .lean();
+    const recentMessages = await Message.find().sort({ createdAt: -1 }).limit(20).lean();
 
     socket.emit('loadMessages', recentMessages.reverse());
 
     // Handle new message events
-    socket.on('sendMessage', async (data: { message: string}) => {
+    socket.on('sendMessage', async (data: { message: string }) => {
       try {
         const newMessage = await Message.create({
           user: user.id,
           username: user.username,
-          message: data.message
+          message: data.message,
         });
 
         // Emit inside room only
@@ -87,7 +85,7 @@ export const initializeSocket = (io: Server) => {
           user: newMessage.user,
           username: newMessage.username,
           message: newMessage.message,
-          createdAt: newMessage.createdAt
+          createdAt: newMessage.createdAt,
         });
 
         // Update stats
@@ -95,14 +93,15 @@ export const initializeSocket = (io: Server) => {
         io.to(ROOM).emit('stats', {
           totalMessages,
           totalUsers,
-          activeUsers: connectedUsers.size
+          activeUsers: connectedUsers.size,
         });
       } catch (error) {
+        console.error('Error sending message:', error);
         socket.emit('error', { message: 'Failed to send message' });
       }
     });
 
-    // Handle typing events 
+    // Handle typing events
     socket.on('typing', () => {
       socket.to(ROOM).emit('userTyping', { username: user.username });
     });
@@ -118,14 +117,14 @@ export const initializeSocket = (io: Server) => {
 
       socket.to(ROOM).emit('userLeft', {
         username: user.username,
-        timestamp: new Date()
+        timestamp: new Date(),
       });
 
       // Update stats
       io.to(ROOM).emit('stats', {
         totalMessages,
         totalUsers,
-        activeUsers: connectedUsers.size
+        activeUsers: connectedUsers.size,
       });
     });
   });

@@ -1,5 +1,5 @@
-import ChatContainer from "@/components/chat/ChatContainer";
-import SocketProvider from "@/context/SocketContext";
+import ChatContainer from '@/components/chat/ChatContainer';
+import SocketProvider from '@/context/SocketContext';
 
 const ChatPage = () => {
   return (

@@ -5,22 +5,22 @@ const MessageSchema = new Schema<IMessage>({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
   },
   username: {
     type: String,
-    required: true
+    required: true,
   },
   message: {
     type: String,
     required: [true, 'Message content is required'],
     trim: true,
-    maxlength: 1000
+    maxlength: 1000,
   },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 MessageSchema.index({ createdAt: -1 });

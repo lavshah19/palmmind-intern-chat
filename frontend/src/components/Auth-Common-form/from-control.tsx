@@ -1,23 +1,17 @@
-import type { FormControlsProps, FormControlType, MyFormData} from "@/types/auth";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { Textarea } from "../ui/textarea";
+import type { FormControlsProps, FormControlType, MyFormData } from '@/types/auth';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Textarea } from '../ui/textarea';
 
 function FormControls({ formControls = [], formData, setFormData }: FormControlsProps) {
   function renderComponentByType(getControlItem: FormControlType) {
     let element = null;
-   const key = getControlItem.name as keyof MyFormData;
-const currentControlItemValue = formData[key] || "";
+    const key = getControlItem.name as keyof MyFormData;
+    const currentControlItemValue = formData[key] || '';
 
     switch (getControlItem.ComponentType) {
-      case "input":
+      case 'input':
         element = (
           <Input
             id={getControlItem.name}
@@ -34,7 +28,7 @@ const currentControlItemValue = formData[key] || "";
           />
         );
         break;
-      case "select":
+      case 'select':
         element = (
           <Select
             onValueChange={(value) =>
@@ -60,7 +54,7 @@ const currentControlItemValue = formData[key] || "";
           </Select>
         );
         break;
-      case "textarea":
+      case 'textarea':
         element = (
           <Textarea
             id={getControlItem.name}
@@ -103,7 +97,9 @@ const currentControlItemValue = formData[key] || "";
     <div className="flex flex-col gap-4">
       {formControls.map((controleItem) => (
         <div key={controleItem.name}>
-          <Label className={"mb-2"} htmlFor={controleItem.name}>{controleItem.label}</Label>
+          <Label className={'mb-2'} htmlFor={controleItem.name}>
+            {controleItem.label}
+          </Label>
           {renderComponentByType(controleItem)}
         </div>
       ))}

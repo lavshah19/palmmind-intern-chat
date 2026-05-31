@@ -1,13 +1,13 @@
-import { createContext, useEffect, useState, useCallback, type ReactNode } from "react";
-import { io, Socket } from "socket.io-client";
-import { toast } from "sonner";
-import type { Message, Stats, SocketContextType } from "@/types/chat";
-import { useAuth } from "@/components/hooks/useAuth";
-import { getOlderMessages } from "@/service/api/chat";
+import { createContext, useEffect, useState, useCallback, type ReactNode } from 'react';
+import { io, Socket } from 'socket.io-client';
+import { toast } from 'sonner';
+import type { Message, Stats, SocketContextType } from '@/types/chat';
+import { useAuth } from '@/components/hooks/useAuth';
+import { getOlderMessages } from '@/service/api/chat';
 
 export const SocketContext = createContext<SocketContextType | null>(null);
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL; 
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
 export default function SocketProvider({ children }: { children: ReactNode }) {
   const { authUser } = useAuth();
@@ -18,66 +18,62 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
   const [typingUsers, setTypingUsers] = useState<string[]>([]);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [isLoadingOlder, setIsLoadingOlder] = useState(false);
-  
-
 
   useEffect(() => {
     if (!authUser.authenticate) return;
 
-    const token =  JSON.parse(sessionStorage.getItem("token") as string);
+    const token = JSON.parse(sessionStorage.getItem('token') as string);
 
     const newSocket = io(SOCKET_URL, {
       auth: { token },
     });
 
-    newSocket.on("connect", () => {
-      console.log("Socket connected");
+    newSocket.on('connect', () => {
+      console.log('Socket connected');
       setIsConnected(true);
     });
 
-    newSocket.on("disconnect", () => {
-      console.log("Socket disconnected");
+    newSocket.on('disconnect', () => {
+      console.log('Socket disconnected');
       setIsConnected(false);
     });
 
     // Load initial messages
-    newSocket.on("loadMessages", (loadedMessages: Message[]) => {
+    newSocket.on('loadMessages', (loadedMessages: Message[]) => {
       setMessages(loadedMessages);
     });
 
     // New message
-    newSocket.on("message", (message: Message) => {
+    newSocket.on('message', (message: Message) => {
       setMessages((prev) => [...prev, message]);
     });
 
     // Stats update
-    newSocket.on("stats", (newStats: Stats) => {
+    newSocket.on('stats', (newStats: Stats) => {
       setStats(newStats);
     });
 
     // User joined
-    newSocket.on("userJoined", (data: { username: string }) => {
+    newSocket.on('userJoined', (data: { username: string }) => {
       toast.success(`${data.username} joined the chat`);
     });
 
     // User left
-    newSocket.on("userLeft", (data: { username: string }) => {
+    newSocket.on('userLeft', (data: { username: string }) => {
       toast.info(`${data.username} left the chat`);
     });
 
     // Typing indicators
-    newSocket.on("userTyping", (data: { username: string }) => {
-      setTypingUsers((prev) => 
-        prev.includes(data.username) ? prev : [...prev, data.username]
-      );
+    newSocket.on('userTyping', (data: { username: string }) => {
+      setTypingUsers((prev) => (prev.includes(data.username) ? prev : [...prev, data.username]));
     });
 
-    newSocket.on("userStopTyping", (data: { username: string }) => {
+    newSocket.on('userStopTyping', (data: { username: string }) => {
       setTypingUsers((prev) => prev.filter((user) => user !== data.username));
     });
 
     // Error handling
-    newSocket.on("error", (data: { message: string }) => {
+    newSocket.on('error', (data: { message: string }) => {
       toast.error(data.message);
     });
 
@@ -92,22 +88,22 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
   const sendMessage = useCallback(
     (message: string) => {
       if (socket && message.trim()) {
-        socket.emit("sendMessage", { message: message.trim() });
+        socket.emit('sendMessage', { message: message.trim() });
       }
     },
-    [socket]
+    [socket],
   );
 
   // Typing indicators
   const startTyping = useCallback(() => {
     if (socket) {
-      socket.emit("typing");
+      socket.emit('typing');
     }
   }, [socket]);
 
   const stopTyping = useCallback(() => {
     if (socket) {
-      socket.emit("stopTyping");
+      socket.emit('stopTyping');
     }
   }, [socket]);
 
@@ -129,7 +125,8 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
         setHasMoreMessages(false);
       }
     } catch (error) {
-      toast.error("Failed to load older messages");
+      toast.error('Failed to load older messages');
+      console.error(error);
     } finally {
       setIsLoadingOlder(false);
     }
