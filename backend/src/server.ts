@@ -12,7 +12,6 @@ import { initializeSocket } from './socket/socketHandler';
 import messageRoutes from './routes/messageRoutes';
 
 dotenv.config();
-const namespace = 'server.ts';
 const app: Application = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
