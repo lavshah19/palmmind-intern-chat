@@ -1,7 +1,7 @@
 # Name of the workflow (shown in GitHub Actions UI)
 name: build-and-lint
 
-# WHEN this workflow runs
+# WHEN this workflow  runs
 on:
   # Runs when code is pushed to these branches
   push:
