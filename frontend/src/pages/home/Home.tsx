@@ -27,7 +27,7 @@ const HomePage: React.FC = () => {
         <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">Palmmind Chat</h1>
 
         <p className="text-xl md:text-2xl text-purple-100 mb-12">
-          Connect and chat with people in real-time CD working 
+          Connect and chat with people in real-time CD working lav shah
         </p>
 
         <button
