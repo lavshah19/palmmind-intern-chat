@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "format": "prettier --write .",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
-    "preview": "vite preview --host --port 5173"
+    "preview": "vite preview --host 0.0.0.0 --port 5173"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.8",
