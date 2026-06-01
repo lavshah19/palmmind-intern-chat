@@ -23,7 +23,8 @@ jobs:
 
       # STEP 1: Download your repository code into the VM
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 
+        # use in ci yml to download your code from GitHub into the runner VM
         # Without this, the runner has no project files
 
       # STEP 2: Install Node.js runtime
